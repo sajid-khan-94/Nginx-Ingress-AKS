@@ -1,0 +1,62 @@
+commands to deploy an aks cluster on linux fedora based machine
+# Install Repo
+sudo dnf install -y https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
+
+# to install cli
+sudo dnf install azure-cli
+
+# To login to azure account
+az login
+
+# To create a resource group
+az group create --name aks-test-rg --location centralindia
+
+# To create a cluster with 1 linux node
+az aks create -g ak-test-rg sajid-test-aks --enable-managed-identity --node-count 1  --generate-ssh-keys
+
+To create a cluster with 2 node 1 linux and 1 windows
+
+az aks  create -g ak-test-res -n sajid-test-aks --node-count 1 --generate-ssh-keys --vm-set-type VirtualMachineScaleSets \
+--windows-admin-username sajid \
+--windows-admin-password Bvcxz@@1234567 \
+--enable-private-cluster \
+--network-plugin azure
+
+Now add Windows node after creating cluster with 1 linux worker node
+az aks nodepool add \
+--resource-group aks-test-rg \
+--cluster-name sajid-test-aks \
+--os-type Windows \
+--name akswin \  (character lenght can't be more that 6)
+--node-vm-size Standard_D4s_v3 \
+--aks-custom-headers WindowsContainerRuntime=containerd \
+--node-count 1
+
+# Download kubectl utility on machine:
+az aks install-cli
+
+# Command to connect your kubectl utility to k8 cluster:
+az aks get-credentials --resource-group grp-private-aks --name sajid-test-aks
+
+#Configure ACR integration for existing AKS clusters
+az aks update -n aks-cluster-name -g aks-resource-group --attach-acr acr-name
+
+To delete a an aks cluster delete the resource group of which it is part of as it will delet all resources inside it automatically:
+aks group delete -n aks-test-rg
+
+#Show the details for a managed Kubernetes cluster
+az aks show -g sajid-test-res -n sajid-test-cluster
+
+az aks list
+
+# To connect aks worker node use kubectl debug command to run a container image on the node to connect to it.
+kubectl debug node/aks-nodepool1-12345678-vmss000000 -it --image=mcr.microsoft.com/dotnet/runtime-deps:6.0
+
+#install nginx-ingress controller in AKS
+helm install check-ingress-controller ingress-nginx/ingress-nginx \
+--namespace nginxns \
+--set controller.replicaCount=1 \
+--set controller.nodeSelector."kubernetes\.io/os"=linux  \
+--set defaultBackend.nodeSelector."kubernetes\.io/os"=linux  
+--set controller.service.externalTrafficPolicy=Local \
+--set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz
