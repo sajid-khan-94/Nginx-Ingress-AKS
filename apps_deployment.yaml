@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: tomtest0
+  name: tomtest0
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomtest0
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tomtest0
+    spec:
+      containers:
+      - image: sajid1994/centos-tomcat
+        name: centos-tomcat
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh","-c","curl -LO https://www.free-css.com/assets/files/free-css-templates/download/page284/maker.zip && unzip maker.zip -d /opt/tomcat/webapps/ && mv /opt/tomcat/webapps/ROOT /opt/tomcat/webapps/ROOT_bkup && mv /opt/tomcat/webapps/maker /opt/tomcat/webapps/ROOT"]
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: tomtest1
+  name: tomtest1
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomtest1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tomtest1
+    spec:
+      containers:
+      - image: sajid1994/centos-tomcat
+        name: centos-tomcat
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh","-c","curl -LO https://www.free-css.com/assets/files/free-css-templates/download/page285/evonyee.zip && unzip evonyee.zip -d /opt/tomcat/webapps/ && mv /opt/tomcat/webapps/evonyee /opt/tomcat/webapps/evon"]
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: tomtest2
+  name: tomtest2
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomtest2
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tomtest2
+    spec:
+      containers:
+      - image: sajid1994/centos-tomcat
+        name: centos-tomcat
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh","-c","curl -LO https://www.free-css.com/assets/files/free-css-templates/download/page284/industrial.zip && unzip industrial.zip -d /opt/tomcat/webapps/ && mv /opt/tomcat/webapps/industrial-html /opt/tomcat/webapps/indus"]
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: tomtest3
+  name: tomtest3
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomtest3
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tomtest3
+    spec:
+      containers:
+      - image: sajid1994/centos-tomcat
+        name: centos-tomcat
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh","-c","curl -LO https://www.free-css.com/assets/files/free-css-templates/download/page284/dorang.zip && unzip dorang.zip -d /opt/tomcat/webapps/ && mv /opt/tomcat/webapps/dorang /opt/tomcat/webapps/dor"]
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
