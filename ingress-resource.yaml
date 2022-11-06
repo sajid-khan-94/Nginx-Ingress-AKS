@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: tomcat-ingress-res
+  namespace: app
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: tomtest0
+            port:
+              number: 80
+      - path: /evon(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: tomtest1
+            port:
+              number: 80
+      - path: /indus(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: tomtest2
+            port:
+              number: 80
+      - path: /dor(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: tomtest3
+            port:
+              number: 80  
